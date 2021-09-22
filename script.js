@@ -1,12 +1,14 @@
 const addBtn = document.getElementById('add');
 
-const notes = JSON.parse(localStorage.getItem('notes'));
+const notes = JSON.parse(localStorage.getItem('notes')); // Lê o conteúdo do localStorage e coloca em notes
 
+//Popula a tela com o cards com o conteúdo do localStorage
 if (notes) {
     notes.forEach(note => addNewNote(note));
 }
 
 addBtn.addEventListener('click', () => addNewNote());
+
 
 function addNewNote(text = '') {
     const note = document.createElement('div');
@@ -29,27 +31,32 @@ function addNewNote(text = '') {
     textArea.value = text;
     main.innerHTML = marked(text);
 
+    //Evento disparado no click do botão delete.
     deleteBtn.addEventListener('click', () => {
-        note.remove();
-        updateLS();
+        note.remove(); //remove o elemento
+        updateLS(); //Atualiza o localStorage retirando o conteúdo do elemento excluido
     });
 
+    //Evento disparado no click do botão edit.
     editBtn.addEventListener('click', () => {
         main.classList.toggle('hidden');
         textArea.classList.toggle('hidden');
     });
 
+    //Evento disparado ao digitar no textArea.
     textArea.addEventListener('input', (e) => {
         const { value } = e.target;
 
         main.innerHTML = marked(value);
 
-        updateLS();
+        updateLS(); //Chama a função que atualiza as notas e salva no localStorage.
     });
 
     document.body.appendChild(note);
 }
 
+
+//Função para atualizar o conteúdo da textarea e inserir no localStorage
 function updateLS() {
     const notesText = document.querySelectorAll('textarea');
 
